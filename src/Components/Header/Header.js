@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, Search, X } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const categories = [
     { name: "Home", href: "/" },
@@ -25,37 +27,58 @@ export default function Header() {
           <Link href="/" className="text-3xl font-bold text-red-600">
             NewsPortal
           </Link>
-          <div className="hidden md:flex items-center space-x-4">
-            <Link href="/login" className="text-gray-600 hover:text-red-600">
-              Login
-            </Link>
-            <Link href="/register" className="text-gray-600 hover:text-red-600">
-              Register
-            </Link>
+          <div className="flex items-center space-x-4">
+            <button
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X /> : <Menu />}
+            </button>
           </div>
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X /> : <Menu />}
-          </button>
         </div>
 
-        {/* Navigation */}
-        <nav className={`${isMenuOpen ? "block" : "hidden"} md:block pb-4`}>
-          <ul className="flex flex-col md:flex-row md:items-center md:space-x-6">
-            {categories.map((category) => (
-              <li key={category.name}>
+        {/* Navigation and Auth Links */}
+        <div className={`${isMenuOpen ? "block" : "hidden"} md:block pb-4`}>
+          <nav className="space-y-4 md:space-y-0">
+            <ul className="flex flex-col md:flex-row md:items-center md:space-x-6">
+              {categories.map((category) => (
+                <li key={category.name}>
+                  <Link
+                    href={category.href}
+                    className="block py-2 text-gray-700 hover:text-red-600"
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 pt-4 md:pt-0 border-t md:border-0">
+              {isAuthenticated ? (
                 <Link
-                  href={category.href}
-                  className="block py-2 text-gray-700 hover:text-red-600"
+                  href="/dashboard"
+                  className="text-gray-600 hover:text-red-600"
                 >
-                  {category.name}
+                  Dashboard
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="text-gray-600 hover:text-red-600"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="text-gray-600 hover:text-red-600"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
+            </div>
+          </nav>
+        </div>
       </div>
     </header>
   );
