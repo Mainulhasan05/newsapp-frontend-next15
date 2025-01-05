@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import Providers from "./providers";
 import Header from "@/Components/Header/Header";
 import "./globals.css";
+import MoveToTop from "@/Components/moveToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
           <Header />
           {children}
         </Providers>
+        <MoveToTop />
       </body>
     </html>
   );

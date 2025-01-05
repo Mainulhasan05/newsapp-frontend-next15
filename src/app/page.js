@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import MoveToTop from "@/Components/moveToTop";
+
+import Advertisement from "@/Components/Advertisement/Advertisement";
 
 export default function Home() {
   const featuredNews = {
@@ -149,9 +150,9 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Side News */}
+        {/* Side News and Advertisements */}
         <div className="lg:w-1/4">
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="bg-gray-50 p-4 rounded-lg mb-6">
             <h2 className="text-xl font-bold mb-4 border-b-2 border-red-600 pb-2">
               Latest Updates
             </h2>
@@ -170,10 +171,28 @@ export default function Home() {
               ))}
             </div>
           </div>
+
+          {/* Advertisement Sections */}
+          <Advertisement
+            src="/placeholder.svg?height=250&width=300"
+            alt="Advertisement 1"
+            width={300}
+            height={250}
+          />
+          <Advertisement
+            src="/placeholder.svg?height=250&width=300"
+            alt="Advertisement 2"
+            width={300}
+            height={250}
+          />
+          <Advertisement
+            src="/placeholder.svg?height=250&width=300"
+            alt="Advertisement 3"
+            width={300}
+            height={250}
+          />
         </div>
       </div>
-
-      <MoveToTop />
     </div>
   );
 }
