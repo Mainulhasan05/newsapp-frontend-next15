@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Menu, Search, X } from "lucide-react";
 import { logout } from "@/store/features/auth/authSlice";
+import Image from "next/image";
 
 // Helper function to convert to Bengali numerals
 function toBengaliNumerals(number) {
@@ -59,7 +60,13 @@ export default function Header() {
         {/* Logo, title, and date/time */}
         <div className="flex flex-col items-center justify-center py-4">
           <Link href="/" className="text-3xl font-bold text-red-600 mb-2">
-            NewsPortal
+            {/* NewsPortal */}
+            <Image
+              src={"/images/logo.png"}
+              alt="NewsPortal"
+              width={200}
+              height={50}
+            />
           </Link>
           <div className="text-sm text-gray-600">{currentDateTime}</div>
         </div>
@@ -80,7 +87,7 @@ export default function Header() {
                 {categories.map((category) => (
                   <li key={category.name}>
                     <Link
-                      href={category.href}
+                      href={`/category/${category.href}`}
                       className="block py-2 text-gray-700 hover:text-red-600"
                     >
                       {category.name}
