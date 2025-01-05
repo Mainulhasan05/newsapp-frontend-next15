@@ -3,6 +3,7 @@ import Providers from "./providers";
 import Header from "@/Components/Header/Header";
 import "./globals.css";
 import MoveToTop from "@/Components/moveToTop";
+import Footer from "@/Components/Footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <Header />
           {children}
+          <Footer />
         </Providers>
         <MoveToTop />
       </body>

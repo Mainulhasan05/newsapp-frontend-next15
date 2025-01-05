@@ -87,7 +87,7 @@ export default function Header() {
                 {categories.map((category) => (
                   <li key={category.name}>
                     <Link
-                      href={`/category/${category.href}`}
+                      href={`/category${category.href}`}
                       className="block py-2 text-gray-700 hover:text-red-600"
                     >
                       {category.name}
