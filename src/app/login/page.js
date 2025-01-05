@@ -1,8 +1,10 @@
 "use client";
-
+import axiosInstance from "@/utils/axiosInstance";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const router = useRouter();
@@ -10,15 +12,31 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your authentication logic here
-    router.push("/dashboard");
+    setLoading(true);
+    toast.dismiss(); // Dismiss any existing toasts
+
+    try {
+      const response = await axiosInstance.post("/api/auth/login", formData);
+      const accessToken = response.data?.data?.accessToken;
+      Cookies.set("access_token", accessToken, { expires: 1 / 24 });
+
+      toast.success("Login successful! Redirecting...");
+      router.push("/dashboard");
+    } catch (err) {
+      toast.error("Invalid email or password");
+      console.error("Login failed", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -49,8 +67,9 @@ export default function Login() {
           <button
             type="submit"
             className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700"
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p className="mt-4 text-center">
