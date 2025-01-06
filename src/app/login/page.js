@@ -5,9 +5,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { fetchProfile } from "@/store/features/auth/authSlice";
 
 export default function Login() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -22,10 +25,13 @@ export default function Login() {
     try {
       const response = await axiosInstance.post("/api/auth/login", formData);
       const accessToken = response.data?.data?.accessToken;
-      Cookies.set("access_token", accessToken, { expires: 1 / 24 });
+      Cookies.set("access_token", accessToken, {
+        expires: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      });
 
       toast.success("Login successful! Redirecting...");
-      router.push("/dashboard");
+      await dispatch(fetchProfile());
+      router.push("/dashboard/profile");
     } catch (err) {
       toast.error("Invalid email or password");
       console.error("Login failed", err);

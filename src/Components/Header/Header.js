@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Menu, Search, X } from "lucide-react";
-import { logout } from "@/store/features/auth/authSlice";
+import { fetchProfile, logout } from "@/store/features/auth/authSlice";
 import Image from "next/image";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 // Helper function to convert to Bengali numerals
 function toBengaliNumerals(number) {
@@ -14,10 +16,19 @@ function toBengaliNumerals(number) {
 }
 
 export default function Header() {
+  const { user } = useSelector((state) => state.auth);
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState("");
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const accessToken = Cookies.get("access_token");
+    if (accessToken) {
+      dispatch(fetchProfile());
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -51,7 +62,9 @@ export default function Header() {
   ];
 
   const handleLogout = () => {
+    Cookies.remove("access_token");
     dispatch(logout());
+    router.push("/");
   };
 
   return (

@@ -10,6 +10,7 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  UserCircle,
 } from "lucide-react";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
@@ -26,10 +27,26 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       icon: FileText,
       href: "/dashboard/articles",
     },
+
+    {
+      title: "Categories",
+      icon: FileText,
+      href: "/dashboard/categories",
+    },
+    {
+      title: "Tags",
+      icon: FileText,
+      href: "/dashboard/tags",
+    },
     {
       title: "Users",
       icon: Users,
       href: "/dashboard/users",
+    },
+    {
+      title: "Profile",
+      icon: UserCircle,
+      href: "/dashboard/profile",
     },
     {
       title: "Settings",
