@@ -4,7 +4,7 @@ import Header from "@/Components/Header/Header";
 import "./globals.css";
 import MoveToTop from "@/Components/moveToTop";
 import Footer from "@/Components/Footer/Footer";
-
+import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -17,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
+          <Toaster position="top-right" />
           <Header />
           {children}
           <Footer />

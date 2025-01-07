@@ -9,7 +9,7 @@ export default function CategoryModal({ category, onClose }) {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
-    slug: "",
+
     description: "",
     image: "",
     parentCategory: "",
@@ -62,15 +62,7 @@ export default function CategoryModal({ category, onClose }) {
               className="mt-2 p-2 w-full border rounded"
               required
             />
-            <input
-              type="text"
-              name="slug"
-              value={formData.slug}
-              onChange={handleChange}
-              placeholder="Slug"
-              className="mt-2 p-2 w-full border rounded"
-              required
-            />
+
             <textarea
               name="description"
               value={formData.description}

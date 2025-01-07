@@ -1,4 +1,5 @@
 import axiosInstance from "@/utils/axiosInstance";
+import toast from "react-hot-toast";
 
 // /api/categories
 export const fetchCategoriesAPI = async (page = 1, name = "") => {
@@ -18,6 +19,7 @@ export const addCategoryAPI = async (categoryData) => {
     const response = await axiosInstance.post("/api/categories", categoryData);
     return response.data;
   } catch (error) {
+    toast.error(error.response.data.message);
     throw error;
   }
 };

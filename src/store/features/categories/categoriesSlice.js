@@ -74,9 +74,9 @@ const categoriesSlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.loading = false;
-        state.categories = action.payload.categories;
-        state.totalPages = action.payload.totalPages;
-        state.currentPage = action.payload.currentPage;
+        state.categories = action.payload?.data?.categories;
+        state.totalPages = action.payload?.data?.totalPages;
+        state.currentPage = action.payload?.data?.currentPage;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.loading = false;

@@ -18,7 +18,7 @@ export default function CategoriesPage() {
     currentPage = 1,
     loading = false,
     error = null,
-  } = useSelector((state) => state.category);
+  } = useSelector((state) => state.categories);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
