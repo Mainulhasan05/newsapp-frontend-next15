@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import {
   addCategory,
   updateCategory,
+  fetchCategories,
 } from "@/store/features/categories/categoriesSlice";
 
 export default function CategoryModal({ category, onClose }) {
@@ -35,12 +36,17 @@ export default function CategoryModal({ category, onClose }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (category) {
-      dispatch(updateCategory({ id: category._id, ...formData }));
+      console.log("category", category);
+      await dispatch(
+        updateCategory({ categoryId: category._id, categoryData: formData })
+      );
+      dispatch(fetchCategories());
     } else {
-      dispatch(addCategory(formData));
+      await dispatch(addCategory(formData));
+      dispatch(fetchCategories());
     }
     onClose();
   };

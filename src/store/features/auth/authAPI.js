@@ -34,3 +34,28 @@ export const changePassword = async (passwordData) => {
     throw error;
   }
 };
+
+// api/auth/users , page, limit, name
+export const getUsers = async (page = 1, limit = 15, name = "") => {
+  try {
+    const response = await axiosInstance.get(
+      `/api/auth/users?page=${page}&limit=${limit}&name=${name}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// /api/auth/assign-role, post const { userId, role } = req.body;
+export const assignRole = async (roleData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/api/auth/assign-role",
+      roleData
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -1,4 +1,4 @@
-export default function CategoryList({ categories, onEdit, onDelete }) {
+export default function UserList({ users, onAssignRole }) {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white">
@@ -8,10 +8,13 @@ export default function CategoryList({ categories, onEdit, onDelete }) {
               Name
             </th>
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Slug
+              Email
             </th>
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Status
+              Roles
+            </th>
+            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Verified
             </th>
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               Actions
@@ -19,32 +22,22 @@ export default function CategoryList({ categories, onEdit, onDelete }) {
           </tr>
         </thead>
         <tbody>
-          {categories.map((category) => (
-            <tr key={category._id}>
-              <td className="px-6 py-4 whitespace-nowrap">{category.name}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{category.slug}</td>
-              <td
-                className={`px-6 py-4 whitespace-nowrap ${
-                  category.status === "active"
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
-              >
-                {category.status}
+          {users.map((user) => (
+            <tr key={user._id}>
+              <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {user.roles.join(", ")}
               </td>
-
+              <td className="px-6 py-4 whitespace-nowrap">
+                {user.isVerified ? "Yes" : "No"}
+              </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button
-                  onClick={() => onEdit(category)}
-                  className="text-blue-600 hover:text-blue-900 mr-2"
+                  onClick={() => onAssignRole(user)}
+                  className="text-blue-600 hover:text-blue-900"
                 >
-                  Edit
-                </button>
-                <button
-                  onClick={() => onDelete(category._id)}
-                  className="text-red-600 hover:text-red-900"
-                >
-                  Delete
+                  Assign Role
                 </button>
               </td>
             </tr>

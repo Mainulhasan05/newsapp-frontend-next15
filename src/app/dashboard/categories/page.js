@@ -41,9 +41,10 @@ export default function CategoriesPage() {
     setIsModalOpen(true);
   };
 
-  const handleDeleteCategory = (categoryId) => {
+  const handleDeleteCategory = async (categoryId) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
-      dispatch(deleteCategory(categoryId));
+      await dispatch(deleteCategory(categoryId));
+      dispatch(fetchCategories(currentPage));
     }
   };
 

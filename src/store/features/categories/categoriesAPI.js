@@ -27,6 +27,8 @@ export const addCategoryAPI = async (categoryData) => {
 // /api/categories/:id
 export const updateCategoryAPI = async (categoryId, categoryData) => {
   try {
+    console.log("categoryData", categoryData);
+    console.log("categoryId", categoryId);
     const response = await axiosInstance.put(
       `/api/categories/${categoryId}`,
       categoryData

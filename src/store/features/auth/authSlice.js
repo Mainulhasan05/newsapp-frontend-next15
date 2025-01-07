@@ -1,9 +1,18 @@
-import { getProfile, changePassword, updateProfile } from "./authAPI";
+import {
+  getProfile,
+  changePassword,
+  updateProfile,
+  getUsers,
+  assignRole,
+} from "./authAPI";
 
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null,
+  users: [],
+  totalPages: 0,
+  currentPage: 1,
   isAuthenticated: false,
 };
 
@@ -40,6 +49,31 @@ export const changeUserPassword = createAsyncThunk(
   }
 );
 
+export const fetchUsers = createAsyncThunk(
+  "auth/fetchUsers",
+  async ({ page, limit, name }) => {
+    try {
+      const response = await getUsers(page, limit, name);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+// update user role updateUserRoles
+export const updateUserRoles = createAsyncThunk(
+  "auth/updateUserRoles",
+  async (roleData) => {
+    try {
+      const response = await assignRole(roleData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -63,6 +97,19 @@ const authSlice = createSlice({
     });
     builder.addCase(changeUserPassword.fulfilled, (state, action) => {
       state.user = action.payload;
+    });
+    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      state.users = action.payload.data.users;
+      state.totalPages = action.payload.data.totalPages;
+      state.currentPage = action.payload.data.currentPage;
+    });
+    builder.addCase(updateUserRoles.fulfilled, (state, action) => {
+      state.users = state.users.map((user) => {
+        if (user._id === action.payload._id) {
+          return action.payload;
+        }
+        return user;
+      });
     });
   },
 });
