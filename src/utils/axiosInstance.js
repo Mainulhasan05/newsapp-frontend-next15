@@ -10,7 +10,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config) => {
     let token = Cookies.get("access_token"); // Renamed from "arx_auth_token"
-
     // if (!token) {
     //   try {
     //     const response = await axios.post(
@@ -46,7 +45,7 @@ axiosInstance.interceptors.response.use(
           {},
           { withCredentials: true }
         );
-        const newToken = response.data.accessToken;
+        const newToken = response.data?.data.accessToken;
         Cookies.set("access_token", newToken); // Renamed token
         error.config.headers.Authorization = `Bearer ${newToken}`;
         return axiosInstance(error.config); // Retry the original request
