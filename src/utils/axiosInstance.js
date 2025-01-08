@@ -51,6 +51,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(error.config); // Retry the original request
       } catch (refreshError) {
         console.error("Token refresh failed", refreshError);
+        Cookies.remove("access_token");
         return Promise.reject(refreshError);
       }
     }
