@@ -1,66 +1,62 @@
-export default function Articles() {
-  const articles = [
-    {
-      id: 1,
-      title: "Breaking News: Major Event",
-      category: "News",
-      date: "2023-05-15",
-    },
-    {
-      id: 2,
-      title: "New Technology Breakthrough",
-      category: "Tech",
-      date: "2023-05-14",
-    },
-    {
-      id: 3,
-      title: "Sports Team Wins Championship",
-      category: "Sports",
-      date: "2023-05-13",
-    },
-  ];
+"use client";
+
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
+import {
+  fetchArticles,
+  deleteArticle,
+} from "@/store/features/articles/articleSlice";
+import ArticleList from "@/Components/Dashboard/Articles/ArticleList";
+import Pagination from "@/Components/Pagination";
+import SearchBar from "@/Components/SearchBar";
+
+export default function ArticlesPage() {
+  const dispatch = useDispatch();
+  const { articles, totalPages, currentPage, loading, error } = useSelector(
+    (state) => state.articles
+  );
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // useEffect(() => {
+  //   dispatch(fetchArticles({ page: 1, searchTerm }));
+  // }, [dispatch, searchTerm]);
+
+  const handlePageChange = (page) => {
+    dispatch(fetchArticles({ page, searchTerm }));
+  };
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const handleDelete = (articleId) => {
+    if (window.confirm("Are you sure you want to delete this article?")) {
+      dispatch(deleteArticle(articleId));
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Articles</h1>
-      <div className="bg-white shadow-md rounded-lg overflow-x-auto">
-        <table className="min-w-full leading-normal">
-          <thead>
-            <tr>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Title
-              </th>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Category
-              </th>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Date
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {articles.map((article) => (
-              <tr key={article.id}>
-                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p className="text-gray-900 whitespace-no-wrap">
-                    {article.title}
-                  </p>
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p className="text-gray-900 whitespace-no-wrap">
-                    {article.category}
-                  </p>
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p className="text-gray-900 whitespace-no-wrap">
-                    {article.date}
-                  </p>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Articles</h1>
+        <Link
+          href="/dashboard/articles/new"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Add New Article
+        </Link>
       </div>
+      <SearchBar onSearch={handleSearch} />
+      <ArticleList articles={articles} onDelete={handleDelete} />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

@@ -5,12 +5,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../store/features/auth/authSlice";
 import newsReducer from "../store/features/news/newsSlice";
 import categoriesSlice from "@/store/features/categories/categoriesSlice";
+import articleSlice from "@/store/features/articles/articleSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     news: newsReducer,
     categories: categoriesSlice,
+    articles: articleSlice,
   },
 });
 
