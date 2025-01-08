@@ -12,10 +12,10 @@ export default function ImageGalleryModal({ isOpen, onClose, images }) {
 
   const filteredImages = images.filter(
     (image) =>
-      image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      image.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      image.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase())
+      image?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      image?.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      image?.tags.some((tag) =>
+        tag?.toLowerCase().includes(searchTerm.toLowerCase())
       )
   );
 

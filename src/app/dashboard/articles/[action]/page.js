@@ -9,14 +9,21 @@ import {
   updateArticle,
 } from "@/store/features/articles/articleSlice";
 import { fetchCategories } from "@/store/features/categories/categoriesSlice";
+import ImageUploadModal from "@/Components/Gallery/ImageUploadModal ";
+import ImageGalleryModal from "@/Components/Gallery/ImageGalleryModal";
+import { fetchGalleryImages } from "@/store/features/gallery/gallerySlice";
+import Image from "next/image";
 
 const QuillEditor = dynamic(() => import("@/Components/QuillEditor"), {
   ssr: false,
 });
 
 export default function ArticleForm({ params }) {
+  const { images } = useSelector((state) => state.gallery);
   const resolvedParams = React.use(params);
   const dispatch = useDispatch();
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
   const { categories } = useSelector((state) => state.categories);
   const { currentArticle, loading, error } = useSelector(
     (state) => state.articles
@@ -36,6 +43,7 @@ export default function ArticleForm({ params }) {
 
   useEffect(() => {
     dispatch(fetchCategories());
+    dispatch(fetchGalleryImages());
     if (resolvedParams.action === "edit" && resolvedParams.id) {
       dispatch(fetchArticle(resolvedParams.id));
     }
@@ -131,6 +139,7 @@ export default function ArticleForm({ params }) {
               onChange={handleContentChange}
             />
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label
@@ -173,6 +182,23 @@ export default function ArticleForm({ params }) {
             </div>
           </div>
           <div>
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-3xl font-bold">Image Gallery</h1>
+              <div>
+                <button
+                  onClick={() => setIsUploadModalOpen(true)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600 transition-colors"
+                >
+                  Upload Image
+                </button>
+                <button
+                  onClick={() => setIsGalleryModalOpen(true)}
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
+                >
+                  View All Images
+                </button>
+              </div>
+            </div>
             <label
               htmlFor="featuredImage"
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -188,6 +214,20 @@ export default function ArticleForm({ params }) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+          {
+            // if formData?.featuredImage is not empty, show the image
+            formData?.featuredImage && (
+              <div className="mt-4">
+                <Image
+                  width={200}
+                  height={200}
+                  src={formData.featuredImage}
+                  alt="Featured Image"
+                  className="max-w-full"
+                />
+              </div>
+            )
+          }
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -284,6 +324,15 @@ export default function ArticleForm({ params }) {
             </button>
           </div>
         </form>
+        <ImageUploadModal
+          isOpen={isUploadModalOpen}
+          onClose={() => setIsUploadModalOpen(false)}
+        />
+        <ImageGalleryModal
+          isOpen={isGalleryModalOpen}
+          onClose={() => setIsGalleryModalOpen(false)}
+          images={images}
+        />
       </div>
     </div>
   );

@@ -3,15 +3,18 @@ import { deleteImageAPI, fetchGallery, uploadImageAPI } from "./galleryAPI";
 
 const initialState = {
   images: [],
+  totalPages: 0,
+  currentPage: 1,
+
   loading: false,
   error: null,
 };
 
 export const fetchGalleryImages = createAsyncThunk(
   "gallery/fetchGalleryImages",
-  async () => {
+  async (page) => {
     try {
-      const response = await fetchGallery();
+      const response = await fetchGallery(page);
       return response.data;
     } catch (error) {
       throw error;
@@ -54,38 +57,24 @@ const gallerySlice = createSlice({
         state.error = null;
       })
       .addCase(fetchGalleryImages.fulfilled, (state, action) => {
+        console.log("action.payload", action.payload);
+        state.images = action.payload?.images;
+        state.totalPages = action.payload?.totalPages;
+        state.currentPage = action.payload?.currentPage;
         state.loading = false;
-        state.images = action.payload;
+        state.error = null;
       })
       .addCase(fetchGalleryImages.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(uploadImage.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(uploadImage.fulfilled, (state, action) => {
-        state.loading = false;
-        state.images.push(action.payload);
-      })
-      .addCase(uploadImage.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(deleteImage.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.error = action.error.message;
       })
       .addCase(deleteImage.fulfilled, (state, action) => {
-        state.loading = false;
         state.images = state.images.filter(
-          (image) => image._id !== action.payload
+          (image) => image.id !== action.payload.id
         );
       })
-      .addCase(deleteImage.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+      .addCase(uploadImage.fulfilled, (state, action) => {
+        state.images.push(action.payload);
       });
   },
 });
