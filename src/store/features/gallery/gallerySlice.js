@@ -70,7 +70,7 @@ const gallerySlice = createSlice({
       })
       .addCase(deleteImage.fulfilled, (state, action) => {
         state.images = state.images.filter(
-          (image) => image.id !== action.payload.id
+          (image) => image._id !== action.payload._id
         );
       })
       .addCase(uploadImage.fulfilled, (state, action) => {
