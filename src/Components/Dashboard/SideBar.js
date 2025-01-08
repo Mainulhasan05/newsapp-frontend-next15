@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   UserCircle,
+  GalleryHorizontalIcon,
 } from "lucide-react";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
@@ -52,6 +53,12 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       title: "Settings",
       icon: Settings,
       href: "/dashboard/settings",
+    },
+
+    {
+      title: "Gallery",
+      icon: GalleryHorizontalIcon,
+      href: "/dashboard/gallery",
     },
   ];
 

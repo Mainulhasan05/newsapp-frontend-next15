@@ -6,6 +6,7 @@ import authReducer from "../store/features/auth/authSlice";
 import newsReducer from "../store/features/news/newsSlice";
 import categoriesSlice from "@/store/features/categories/categoriesSlice";
 import articleSlice from "@/store/features/articles/articleSlice";
+import gallerySlice from "@/store/features/gallery/gallerySlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     news: newsReducer,
     categories: categoriesSlice,
     articles: articleSlice,
+    gallery: gallerySlice,
   },
 });
 
