@@ -9,6 +9,7 @@ export default function ImageUploadModal({ isOpen, onClose }) {
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
+  const [uploading, setUploading] = useState(false);
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const fileInputRef = useRef(null);
@@ -55,7 +56,9 @@ export default function ImageUploadModal({ isOpen, onClose }) {
       formData.append("title", title);
       formData.append("description", description);
       formData.append("tags", tags);
+      setUploading(true);
       await dispatch(uploadImage(formData));
+      setUploading(false);
       toast.success("Image uploaded successfully!");
       onClose();
     }
@@ -126,12 +129,22 @@ export default function ImageUploadModal({ isOpen, onClose }) {
             onChange={(e) => setTags(e.target.value)}
             className="w-full mb-4 px-3 py-2 border rounded-md"
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-          >
-            Upload
-          </button>
+          {uploading ? (
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+              disabled
+            >
+              Uploading...
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+            >
+              Upload
+            </button>
+          )}
         </form>
       </div>
     </div>
