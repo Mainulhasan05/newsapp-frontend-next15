@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import axiosInstance from "@/utils/axiosInstance";
 
 import Advertisement from "@/Components/Advertisement/Advertisement";
 

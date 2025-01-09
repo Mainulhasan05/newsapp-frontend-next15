@@ -19,7 +19,9 @@ export default function ArticlesPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    dispatch(fetchArticles({ page: 1, searchTerm }));
+    if (articles.length === 0) {
+      dispatch(fetchArticles({ page: 1, searchTerm }));
+    }
   }, [dispatch, searchTerm]);
 
   const handlePageChange = (page) => {
@@ -30,9 +32,11 @@ export default function ArticlesPage() {
     setSearchTerm(term);
   };
 
-  const handleDelete = (articleId) => {
+  const handleDelete = async (articleId) => {
     if (window.confirm("Are you sure you want to delete this article?")) {
-      dispatch(deleteArticle(articleId));
+      await dispatch(deleteArticle(articleId));
+      toast.success("Article deleted successfully!");
+      dispatch(fetchArticles({ page: currentPage, searchTerm }));
     }
   };
 

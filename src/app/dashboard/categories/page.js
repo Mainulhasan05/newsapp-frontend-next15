@@ -24,7 +24,7 @@ export default function CategoriesPage() {
   const [editingCategory, setEditingCategory] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchCategories(1));
+    if (categories.length === 0) dispatch(fetchCategories(1));
   }, [dispatch]);
 
   const handlePageChange = (page) => {

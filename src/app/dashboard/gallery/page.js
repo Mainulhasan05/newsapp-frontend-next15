@@ -18,7 +18,7 @@ export default function GalleryPage() {
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchGalleryImages());
+    if (images.length === 0) dispatch(fetchGalleryImages());
   }, [dispatch]);
 
   const handleDelete = async (imageId) => {

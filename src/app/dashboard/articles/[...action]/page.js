@@ -13,12 +13,15 @@ import { fetchCategories } from "@/store/features/categories/categoriesSlice";
 import ImageGalleryModal from "@/Components/Gallery/ImageGalleryModal";
 import { fetchGalleryImages } from "@/store/features/gallery/gallerySlice";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const QuillEditor = dynamic(() => import("@/Components/QuillEditor"), {
   ssr: false,
 });
 
 export default function ArticleForm({ params }) {
+  const router = useRouter();
   const { images } = useSelector((state) => state.gallery);
   const resolvedParams2 = React.use(params);
   const resolvedParams = {
@@ -26,7 +29,7 @@ export default function ArticleForm({ params }) {
     id: resolvedParams2.action?.length > 1 ? resolvedParams2.action[1] : null,
   };
   const dispatch = useDispatch();
-
+  const [callingAPI, setCallingAPI] = useState(false);
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
   const { categories } = useSelector((state) => state.categories);
   const { currentArticle, loading, error } = useSelector(
@@ -72,21 +75,26 @@ export default function ArticleForm({ params }) {
   };
 
   const handleContentChange = (content) => {
-    console.log("Content changed:", content);
     setFormData((prevState) => ({ ...prevState, content }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setCallingAPI(true);
     const articleData = {
       ...formData,
       tags: formData.tags.split(",").map((tag) => tag.trim()),
     };
     if (resolvedParams.action === "edit") {
-      dispatch(updateArticle({ id: resolvedParams.id, ...articleData }));
+      await dispatch(updateArticle({ id: resolvedParams.id, ...articleData }));
+      toast.success("Article updated successfully!");
+      router.push("/dashboard/articles");
     } else {
-      dispatch(addArticle(articleData));
+      await dispatch(addArticle(articleData));
+      toast.success("Article added successfully!");
+      router.push("/dashboard/articles");
     }
+    setCallingAPI(false);
   };
 
   if (loading)
@@ -104,7 +112,7 @@ export default function ArticleForm({ params }) {
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="max-w-full mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600">
           <h1 className="text-3xl font-bold text-white">
             {resolvedParams.action === "edit"
@@ -314,14 +322,25 @@ export default function ArticleForm({ params }) {
             ></textarea>
           </div>
           <div className="flex justify-end">
-            <button
-              type="submit"
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
-            >
-              {resolvedParams.action === "edit"
-                ? "Update Article"
-                : "Create Article"}
-            </button>
+            {
+              // if callingAPI is true, show a loading spinner
+              callingAPI ? (
+                <div className="flex justify-center items-center h-16 w-16 rounded-full bg-blue-500 text-white font-semibold text-2xl animate-spin">
+                  <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <HiOutlineRefresh />
+                  </span>
+                </div>
+              ) : (
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+                >
+                  {resolvedParams.action === "edit"
+                    ? "Update Article"
+                    : "Create Article"}
+                </button>
+              )
+            }
           </div>
         </form>
 

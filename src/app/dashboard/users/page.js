@@ -16,7 +16,7 @@ export default function UsersPage() {
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchUsers(1));
+    if (users.length === 0) dispatch(fetchUsers(1));
   }, [dispatch]);
 
   const handlePageChange = (page) => {

@@ -114,7 +114,6 @@ export default function ImageUploadModal({ isOpen, onClose }) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full mb-4 px-3 py-2 border rounded-md"
-            required
           />
           <textarea
             placeholder="Description"

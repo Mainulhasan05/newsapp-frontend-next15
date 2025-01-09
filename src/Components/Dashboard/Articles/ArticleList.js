@@ -26,14 +26,14 @@ export default function ArticleList({ articles, onDelete }) {
         <tbody>
           {articles.map((article) => (
             <tr key={article._id}>
-              <td className="px-6 py-4 whitespace-nowrap">{article.title}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{article?.title}</td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {article.author.name}
+                {article?.author?.name}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {article.category.name}
+                {article?.category?.name}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">{article.status}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{article?.status}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <Link
                   href={`/dashboard/articles/edit/${article._id}`}
