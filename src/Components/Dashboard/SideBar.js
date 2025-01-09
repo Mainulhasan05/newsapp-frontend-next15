@@ -34,11 +34,11 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       icon: FileText,
       href: "/dashboard/categories",
     },
-    {
-      title: "Tags",
-      icon: FileText,
-      href: "/dashboard/tags",
-    },
+    // {
+    //   title: "Tags",
+    //   icon: FileText,
+    //   href: "/dashboard/tags",
+    // },
     {
       title: "Users",
       icon: Users,
@@ -49,11 +49,11 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       icon: UserCircle,
       href: "/dashboard/profile",
     },
-    {
-      title: "Settings",
-      icon: Settings,
-      href: "/dashboard/settings",
-    },
+    // {
+    //   title: "Settings",
+    //   icon: Settings,
+    //   href: "/dashboard/settings",
+    // },
 
     {
       title: "Gallery",
