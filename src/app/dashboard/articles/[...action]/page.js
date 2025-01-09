@@ -20,7 +20,11 @@ const QuillEditor = dynamic(() => import("@/Components/QuillEditor"), {
 
 export default function ArticleForm({ params }) {
   const { images } = useSelector((state) => state.gallery);
-  const resolvedParams = React.use(params);
+  const resolvedParams2 = React.use(params);
+  const resolvedParams = {
+    action: resolvedParams2.action[0],
+    id: resolvedParams2.action?.length > 1 ? resolvedParams2.action[1] : null,
+  };
   const dispatch = useDispatch();
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
@@ -44,6 +48,7 @@ export default function ArticleForm({ params }) {
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchGalleryImages());
+
     if (resolvedParams.action === "edit" && resolvedParams.id) {
       dispatch(fetchArticle(resolvedParams.id));
     }
@@ -135,6 +140,7 @@ export default function ArticleForm({ params }) {
               Content
             </label>
             <QuillEditor
+              isEdit={resolvedParams.action === "edit"}
               value={formData.content}
               onChange={handleContentChange}
             />

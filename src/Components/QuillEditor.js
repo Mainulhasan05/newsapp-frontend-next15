@@ -3,23 +3,14 @@ import React, { useEffect } from "react";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 
-export default function QuillEditor({ value, onChange }) {
+export default function QuillEditor({ value, onChange, isEdit = false }) {
   const { quill, quillRef } = useQuill();
-  // {
-  //   modules: {
-  //     toolbar: [
-  //       ['bold', 'italic', 'underline', 'strike'],
-  //       [{ list: 'ordered' }, { list: 'bullet' }],
-  //       [{ header: [1, 2, 3, 4, 5, 6, false] }],
-  //       ['link', 'image'],
-  //       ['clean'],
-  //     ],
-  //   },
-  //   formats: ['bold', 'italic', 'underline', 'strike', 'list', 'bullet', 'header', 'link', 'image'],
-  // }
 
   useEffect(() => {
     if (quill) {
+      if (isEdit && value) {
+        quill.root.innerHTML = value;
+      }
       quill.on("text-change", (delta, oldDelta, source) => {
         onChange(quillRef.current.firstChild.innerHTML);
       });

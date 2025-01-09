@@ -11,10 +11,10 @@ export const createArticleAPI = async (articleData) => {
   }
 };
 
-export const updateArticleAPI = async (articleId, articleData) => {
+export const updateArticleAPI = async (articleData) => {
   try {
     const response = await axiosInstance.put(
-      `/api/articles/${articleId}`,
+      `/api/articles/${articleData.id}`,
       articleData
     );
     return response.data;
@@ -42,9 +42,11 @@ export const getArticleAPI = async (articleId) => {
 };
 
 export const fetchArticlesAPI = async (page = 1, searchTerm = "") => {
+  console.log("searchTerm", searchTerm);
+  console.log("page", page);
   try {
     const response = await axiosInstance.get(
-      `/api/articles?page=${page}&searchTerm=${searchTerm}`
+      `/api/articles?page=${page}&title=${searchTerm}`
     );
     return response.data;
   } catch (error) {

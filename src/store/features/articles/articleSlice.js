@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   articles: [],
+  currentArticle: null,
   totalPages: 0,
   currentPage: 1,
   loading: false,
@@ -17,9 +18,9 @@ const initialState = {
 
 export const fetchArticles = createAsyncThunk(
   "articles/fetchArticles",
-  async (page) => {
+  async ({ page, searchTerm }) => {
     try {
-      const response = await fetchArticlesAPI(page);
+      const response = await fetchArticlesAPI(page, searchTerm);
       return response;
     } catch (error) {
       throw error;
@@ -86,13 +87,31 @@ const articleSlice = createSlice({
       })
       .addCase(fetchArticles.fulfilled, (state, action) => {
         state.loading = false;
-        state.articles = action.payload.data.data;
+        state.articles = action.payload.data.articles;
         state.totalPages = action.payload.data.totalPages;
         state.currentPage = action.payload.data.currentPage;
       })
       .addCase(fetchArticles.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(addArticle.fulfilled, (state, action) => {
+        state.articles.push(action.payload);
+      })
+      .addCase(deleteArticle.fulfilled, (state, action) => {
+        state.articles = state.articles.filter(
+          (article) => article._id !== action.payload._id
+        );
+      })
+      .addCase(updateArticle.fulfilled, (state, action) => {
+        const index = state.articles.findIndex(
+          (article) => article._id === action.payload._id
+        );
+        state.articles[index] = action.payload;
+      })
+      // fetchArticle
+      .addCase(fetchArticle.fulfilled, (state, action) => {
+        state.currentArticle = action.payload?.data;
       });
   },
 });

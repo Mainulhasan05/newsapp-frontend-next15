@@ -18,9 +18,9 @@ export default function ArticlesPage() {
   );
   const [searchTerm, setSearchTerm] = useState("");
 
-  // useEffect(() => {
-  //   dispatch(fetchArticles({ page: 1, searchTerm }));
-  // }, [dispatch, searchTerm]);
+  useEffect(() => {
+    dispatch(fetchArticles({ page: 1, searchTerm }));
+  }, [dispatch, searchTerm]);
 
   const handlePageChange = (page) => {
     dispatch(fetchArticles({ page, searchTerm }));
