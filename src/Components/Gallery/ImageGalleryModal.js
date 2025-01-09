@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { X, Copy, Search } from "lucide-react";
+import ImageUploadModal from "./ImageUploadModal ";
+import toast from "react-hot-toast";
 
 export default function ImageGalleryModal({ isOpen, onClose, images }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => {
-      alert("Image URL copied to clipboard!");
+      toast.success("Image URL copied to clipboard!");
     });
   };
 
@@ -26,6 +29,12 @@ export default function ImageGalleryModal({ isOpen, onClose, images }) {
       <div className="bg-white rounded-lg p-8 max-w-6xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">All Images</h2>
+          <button
+            onClick={() => setIsUploadModalOpen(true)}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600 transition-colors"
+          >
+            Upload Image
+          </button>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
@@ -71,6 +80,10 @@ export default function ImageGalleryModal({ isOpen, onClose, images }) {
             </div>
           ))}
         </div>
+        <ImageUploadModal
+          isOpen={isUploadModalOpen}
+          onClose={() => setIsUploadModalOpen(false)}
+        />
       </div>
     </div>
   );

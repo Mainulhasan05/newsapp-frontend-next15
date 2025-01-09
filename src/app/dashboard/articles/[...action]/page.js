@@ -9,7 +9,7 @@ import {
   updateArticle,
 } from "@/store/features/articles/articleSlice";
 import { fetchCategories } from "@/store/features/categories/categoriesSlice";
-import ImageUploadModal from "@/Components/Gallery/ImageUploadModal ";
+
 import ImageGalleryModal from "@/Components/Gallery/ImageGalleryModal";
 import { fetchGalleryImages } from "@/store/features/gallery/gallerySlice";
 import Image from "next/image";
@@ -26,7 +26,7 @@ export default function ArticleForm({ params }) {
     id: resolvedParams2.action?.length > 1 ? resolvedParams2.action[1] : null,
   };
   const dispatch = useDispatch();
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
   const { categories } = useSelector((state) => state.categories);
   const { currentArticle, loading, error } = useSelector(
@@ -192,12 +192,6 @@ export default function ArticleForm({ params }) {
               <h1 className="text-3xl font-bold">Image Gallery</h1>
               <div>
                 <button
-                  onClick={() => setIsUploadModalOpen(true)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-blue-600 transition-colors"
-                >
-                  Upload Image
-                </button>
-                <button
                   onClick={() => setIsGalleryModalOpen(true)}
                   className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
                 >
@@ -330,10 +324,7 @@ export default function ArticleForm({ params }) {
             </button>
           </div>
         </form>
-        <ImageUploadModal
-          isOpen={isUploadModalOpen}
-          onClose={() => setIsUploadModalOpen(false)}
-        />
+
         <ImageGalleryModal
           isOpen={isGalleryModalOpen}
           onClose={() => setIsGalleryModalOpen(false)}

@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { uploadImage } from "@/store/features/gallery/gallerySlice";
 import { X, Upload } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function ImageUploadModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ export default function ImageUploadModal({ isOpen, onClose }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (file) {
       const formData = new FormData();
@@ -54,7 +55,8 @@ export default function ImageUploadModal({ isOpen, onClose }) {
       formData.append("title", title);
       formData.append("description", description);
       formData.append("tags", tags);
-      dispatch(uploadImage(formData));
+      await dispatch(uploadImage(formData));
+      toast.success("Image uploaded successfully!");
       onClose();
     }
   };

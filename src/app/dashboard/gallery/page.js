@@ -9,6 +9,7 @@ import {
 import ImageUploadModal from "@/Components/Gallery/ImageUploadModal ";
 import ImageGalleryModal from "@/Components/Gallery/ImageGalleryModal";
 import { Trash2, Copy, ImageIcon } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function GalleryPage() {
   const dispatch = useDispatch();
@@ -20,15 +21,16 @@ export default function GalleryPage() {
     dispatch(fetchGalleryImages());
   }, [dispatch]);
 
-  const handleDelete = (imageId) => {
+  const handleDelete = async (imageId) => {
     if (window.confirm("Are you sure you want to delete this image?")) {
-      dispatch(deleteImage(imageId));
+      await dispatch(deleteImage(imageId));
+      toast.success("Image deleted successfully!");
     }
   };
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => {
-      alert("Image URL copied to clipboard!");
+      toast.success("Image URL copied to clipboard!");
     });
   };
 
