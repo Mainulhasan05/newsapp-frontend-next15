@@ -12,19 +12,19 @@ const LatestNews = ({ latestNews }) => {
             <div className="relative aspect-[4/3]">
               <Image
                 src={news?.featuredImage}
-                alt={news.title}
+                alt={news?.title}
                 fill
                 className="object-cover"
               />
               <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm">
-                {getTimeAgo(news.createdAt)}
+                {getTimeAgo(news?.createdAt)}
               </div>
             </div>
             <div className="p-4">
               <span className="text-sm text-red-600">
                 {news.category?.name}
               </span>
-              <h2 className="text-xl font-semibold mt-2">{news.title}</h2>
+              <h2 className="text-xl font-semibold mt-2">{news?.title}</h2>
             </div>
           </div>
         </Link>

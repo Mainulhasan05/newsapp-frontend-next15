@@ -9,12 +9,12 @@ const FeaturedArticle = ({ featuredArticle }) => {
       <div className="relative aspect-[16/9] mb-4">
         <Image
           src={featuredArticle?.featuredImage}
-          alt={featuredArticle.title}
+          alt={featuredArticle?.title}
           fill
           className="object-cover rounded-lg"
         />
         <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm">
-          {getTimeAgo(featuredArticle.createdAt)}
+          {getTimeAgo(featuredArticle?.createdAt)}
         </div>
       </div>
       <div className="space-y-2">
@@ -28,7 +28,7 @@ const FeaturedArticle = ({ featuredArticle }) => {
             })}
           </span>
         </div>
-        <h1 className="text-3xl font-bold">{featuredArticle.title}</h1>
+        <h1 className="text-3xl font-bold">{featuredArticle?.title}</h1>
       </div>
     </div>
   );
