@@ -4,7 +4,9 @@ import React from "react";
 const ImageComponent = ({ src, width, height, alt, className, ...props }) => {
   return (
     <Image
-      src={src ? (src == "" ? "/images/default.png" : src) : "/images/logo.png"}
+      src={
+        src ? (src == "" ? "/images/default.jpg" : src) : "/images/default.jpg"
+      }
       width={width}
       height={height}
       alt={alt}
