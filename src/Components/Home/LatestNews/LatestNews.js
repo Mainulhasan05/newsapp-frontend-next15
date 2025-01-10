@@ -1,3 +1,4 @@
+import ImageComponent from "@/Components/ImageComponent";
 import getTimeAgo from "@/utils/getTimeAgo";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +11,13 @@ const LatestNews = ({ latestNews }) => {
         <Link key={index} href={`/news/${news?.slug}`} passHref>
           <div className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer">
             <div className="relative aspect-[4/3]">
-              <Image
+              {/* <Image
+                src={news?.featuredImage}
+                alt={news?.title}
+                fill
+                className="object-cover"
+              /> */}
+              <ImageComponent
                 src={news?.featuredImage}
                 alt={news?.title}
                 fill

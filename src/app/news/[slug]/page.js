@@ -6,6 +6,7 @@ import CommentSection from "@/Components/News/CommentSection";
 export const revalidate = 60;
 import axiosInstance from "@/utils/axiosInstance";
 import parse from "html-react-parser";
+import NewsTip from "@/Components/News/NewsTip";
 
 // We'll prerender only the params from `generateStaticParams` at build time.
 // If a request comes in for a path that hasn't been generated,
@@ -80,7 +81,7 @@ export default async function ArticleDetail({ params }) {
             <Image
               src={article?.featuredImage}
               alt={article?.title}
-              width={500}
+              width={450}
               height={300}
               className="w-full h-auto rounded-lg shadow-lg"
             />
@@ -104,7 +105,8 @@ export default async function ArticleDetail({ params }) {
 
           {/* Share Icons */}
           <ShareComponent />
-
+          <NewsTip />
+          <br />
           {/* Comments Section */}
           <CommentSection />
         </div>
@@ -115,10 +117,10 @@ export default async function ArticleDetail({ params }) {
           <div className="bg-gray-50 p-6 rounded-lg shadow-lg mb-8">
             <h2 className="text-2xl font-bold mb-4">Related Articles</h2>
             <div className="space-y-4">
-              {relatedArticles?.map((article) => (
-                <div key={article.id} className="flex items-center space-x-4">
+              {relatedArticles?.map((article, index) => (
+                <div key={index} className="flex items-center space-x-4">
                   <Image
-                    src={article.featuredImage}
+                    src={article?.featuredImage}
                     alt={article?.title}
                     width={80}
                     height={60}
@@ -138,8 +140,8 @@ export default async function ArticleDetail({ params }) {
           {/* Advertisements */}
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-4">Advertisements</h2>
-            {advertisements?.map((ad) => (
-              <div key={ad.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
+            {advertisements?.map((ad, index) => (
+              <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-md">
                 <a href={ad.link} target="_blank" rel="noopener noreferrer">
                   <Image
                     src={ad.imageUrl}

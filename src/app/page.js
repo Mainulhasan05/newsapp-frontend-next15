@@ -3,12 +3,15 @@ import Image from "next/image";
 import Advertisement from "@/Components/Advertisement/Advertisement";
 import FeaturedArticle from "@/Components/Home/FeaturedArticle/FeaturedArticle";
 import LatestNews from "@/Components/Home/LatestNews/LatestNews";
+import ImageComponent from "@/Components/ImageComponent";
+import getTimeAgo from "@/utils/getTimeAgo";
+import Link from "next/link";
 
 const getHomePageData = async () => {
   try {
     const response = await fetch(`${process.env.API_URL}/api/home`, {
       next: {
-        revalidate: 5,
+        revalidate: 1,
       },
     });
     return response.json().then((data) => data?.data);
@@ -20,31 +23,6 @@ const getHomePageData = async () => {
 
 export default async function Home() {
   const homePageData = await getHomePageData();
-
-  const featuredNews = {
-    title: "Breaking News: Major Development in Global Politics",
-    image: "/placeholder.svg?height=400&width=600",
-    category: "Politics",
-    date: "January 4, 2024",
-  };
-
-  const latestNews = [
-    {
-      title: "Economic Growth Surpasses Expectations",
-      category: "Business",
-      image: "/placeholder.svg?height=200&width=300",
-    },
-    {
-      title: "New Technology Breakthrough Announced",
-      category: "Technology",
-      image: "/placeholder.svg?height=200&width=300",
-    },
-    {
-      title: "Sports Team Wins Championship",
-      category: "Sports",
-      image: "/placeholder.svg?height=200&width=300",
-    },
-  ];
 
   const sideNews = [
     {
@@ -105,24 +83,35 @@ export default async function Home() {
 
           {/* Bottom Sections */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {bottomSections.map((section) => (
-              <div key={section.title}>
+            {homePageData?.allArticles?.map((section, index) => (
+              <div className="mb-6" key={index}>
                 <h2 className="text-2xl font-bold mb-4 border-b-2 border-red-600 pb-2">
-                  {section.title}
+                  {section.category?.name}
                 </h2>
                 <div className="space-y-4">
                   {section?.articles?.map((article, index) => (
-                    <div key={index} className="flex gap-4">
+                    <Link
+                      href={`/news/${article?.slug}`}
+                      key={index}
+                      className="flex gap-4"
+                    >
                       <div className="relative w-32 h-24">
-                        <Image
-                          src={article.image}
+                        <ImageComponent
+                          src={article.featuredImage}
                           alt={article.title}
                           fill
                           className="object-cover rounded"
                         />
                       </div>
-                      <h3 className="flex-1 font-semibold">{article.title}</h3>
-                    </div>
+                      <div>
+                        <h3 className="flex-1 font-semibold">
+                          {article.title}
+                        </h3>
+                        <span className="text-sm text-red-600 block">
+                          {getTimeAgo(article.createdAt)}
+                        </span>
+                      </div>
+                    </Link>
                   ))}
                 </div>
               </div>

@@ -3,12 +3,19 @@ import Image from "next/image";
 import React, { useState } from "react";
 import getTimeAgo from "@/utils/getTimeAgo";
 import Link from "next/link";
+import ImageComponent from "@/Components/ImageComponent";
 
 const FeaturedArticle = ({ featuredArticle }) => {
   return (
     <Link href={`/news/${featuredArticle?.slug}`} className="mb-12">
       <div className="relative aspect-[16/9] mb-4">
-        <Image
+        {/* <Image
+          src={featuredArticle?.featuredImage}
+          alt={featuredArticle?.title}
+          fill
+          className="object-cover rounded-lg"
+        /> */}
+        <ImageComponent
           src={featuredArticle?.featuredImage}
           alt={featuredArticle?.title}
           fill
