@@ -1,80 +1,36 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { Clock, User, Tag, ChevronRight } from "lucide-react";
 import ShareComponent from "@/Components/News/ShareComponent";
+import CommentSection from "@/Components/News/CommentSection";
 export const revalidate = 60;
+import axiosInstance from "@/utils/axiosInstance";
+import parse from "html-react-parser";
 
 // We'll prerender only the params from `generateStaticParams` at build time.
 // If a request comes in for a path that hasn't been generated,
 // Next.js will server-render the page on-demand.
 export const dynamicParams = true; // or false, to 404 on unknown paths
 
-const article = {
-  title: "Breaking News: Major Development in Global Politics",
-  image: "/placeholder.svg",
-  content:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  author: "John Doe",
-  date: "2023-05-15T14:30:00Z",
-  category: "Politics",
-  tags: ["Global", "Politics", "Breaking News"],
+const advertisements = [
+  { id: 1, imageUrl: "/images/codesharer.webp", link: "#" },
+  { id: 2, imageUrl: "/images/codesharer.webp", link: "#" },
+];
+
+const getArticle = async (slug) => {
+  try {
+    const response = await axiosInstance.get(`/api/home/news/${slug}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching article:", error);
+    return null;
+  }
 };
 
-const relatedArticles = [
-  {
-    id: 1,
-    title: "Related Article 1",
-    slug: "related-article-1",
-    image: "/placeholder.svg",
-  },
-  {
-    id: 2,
-    title: "Related Article 2",
-    slug: "related-article-2",
-    image: "/placeholder.svg",
-  },
-  {
-    id: 3,
-    title: "Related Article 3",
-    slug: "related-article-3",
-    image: "/placeholder.svg",
-  },
-];
-
-const advertisements = [
-  { id: 1, imageUrl: "/placeholder.svg", link: "#" },
-  { id: 2, imageUrl: "/placeholder.svg", link: "#" },
-];
-
-export default function ArticleDetail() {
-  const { slug } = useParams();
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState("");
-
-  useEffect(() => {
-    // Fetch article data based on slug
-    // For now, we're using dummy data
-  }, [slug]);
-
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    if (newComment.trim()) {
-      setComments([
-        ...comments,
-        {
-          id: Date.now(),
-          text: newComment,
-          author: "Anonymous",
-          date: new Date(),
-        },
-      ]);
-      setNewComment("");
-    }
-  };
+export default async function ArticleDetail({ params }) {
+  const resolvedParams = await params;
+  const { data } = await getArticle(resolvedParams.slug);
+  const { article, relatedArticles } = data;
 
   const formatDate = (dateString) => {
     const options = {
@@ -105,7 +61,7 @@ export default function ArticleDetail() {
           </li>
           <ChevronRight size={16} />
           <li className="inline-flex items-center">
-            <span className="text-gray-400">{article.title}</span>
+            <span className="text-gray-400">{article?.title}</span>
           </li>
         </ol>
       </nav>
@@ -113,27 +69,29 @@ export default function ArticleDetail() {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Main Content */}
         <div className="lg:w-2/3">
-          <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
+          <h1 className="text-4xl font-bold mb-4">{article?.title}</h1>
           <div className="flex items-center text-gray-600 mb-6">
             <User size={18} className="mr-2" />
-            <span className="mr-4">{article.author}</span>
+            <span className="mr-4">{article?.author?.name}</span>
             <Clock size={18} className="mr-2" />
-            <span>{formatDate(article.date)}</span>
+            <span>{formatDate(article?.createdAt)}</span>
           </div>
           <div className="mb-6">
             <Image
-              src={article.image}
-              alt={article.title}
-              width={800}
-              height={400}
+              src={article?.featuredImage}
+              alt={article?.title}
+              width={500}
+              height={300}
               className="w-full h-auto rounded-lg shadow-lg"
             />
           </div>
-          <div className="prose max-w-none mb-8">{article.content}</div>
+          <div className="prose max-w-none mb-8">
+            {parse(article?.content ? article?.content : "")}
+          </div>
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {article.tags.map((tag, index) => (
+            {article?.tags?.map((tag, index) => (
               <span
                 key={index}
                 className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm"
@@ -148,38 +106,7 @@ export default function ArticleDetail() {
           <ShareComponent />
 
           {/* Comments Section */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-inner">
-            <h2 className="text-2xl font-bold mb-4">Comments</h2>
-            {comments.map((comment) => (
-              <div
-                key={comment.id}
-                className="bg-white p-4 rounded-lg shadow mb-4"
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold">{comment.author}</p>
-                  <p className="text-sm text-gray-500">
-                    {formatDate(comment.date)}
-                  </p>
-                </div>
-                <p>{comment.text}</p>
-              </div>
-            ))}
-            <form onSubmit={handleCommentSubmit} className="mt-6">
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Write a comment..."
-                className="w-full p-3 border rounded-lg mb-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                rows="3"
-              ></textarea>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-              >
-                Post Comment
-              </button>
-            </form>
-          </div>
+          <CommentSection />
         </div>
 
         {/* Sidebar */}
@@ -191,8 +118,8 @@ export default function ArticleDetail() {
               {relatedArticles.map((article) => (
                 <div key={article.id} className="flex items-center space-x-4">
                   <Image
-                    src={article.image}
-                    alt={article.title}
+                    src={article.featuredImage}
+                    alt={article?.title}
                     width={80}
                     height={60}
                     className="rounded-md"
