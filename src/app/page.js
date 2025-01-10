@@ -6,8 +6,11 @@ import LatestNews from "@/Components/Home/LatestNews/LatestNews";
 
 const getHomePageData = async () => {
   try {
-    console.log(`${process.env.API_URL}/api/home`);
-    const response = await fetch(`${process.env.API_URL}/api/home`);
+    const response = await fetch(`${process.env.API_URL}/api/home`, {
+      next: {
+        revalidate: 60,
+      },
+    });
     return response.json().then((data) => data?.data);
   } catch (error) {
     console.error("Error fetching home page data:", error.message);
