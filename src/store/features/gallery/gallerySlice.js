@@ -57,7 +57,6 @@ const gallerySlice = createSlice({
         state.error = null;
       })
       .addCase(fetchGalleryImages.fulfilled, (state, action) => {
-        console.log("action.payload", action.payload);
         state.images = action.payload?.images;
         state.totalPages = action.payload?.totalPages;
         state.currentPage = action.payload?.currentPage;

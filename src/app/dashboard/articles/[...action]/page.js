@@ -67,6 +67,10 @@ export default function ArticleForm({ params }) {
     }
   }, [currentArticle, resolvedParams.action]);
 
+  useEffect(() => {
+    console.log("formData", formData);
+  }, [formData]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevState) => ({
