@@ -15,6 +15,7 @@ import { fetchGalleryImages } from "@/store/features/gallery/gallerySlice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { RefreshCcw } from "lucide-react";
 
 const QuillEditor = dynamic(() => import("@/Components/QuillEditor"), {
   ssr: false,
@@ -200,6 +201,7 @@ export default function ArticleForm({ params }) {
               <h1 className="text-3xl font-bold">Image Gallery</h1>
               <div>
                 <button
+                  type="button"
                   onClick={() => setIsGalleryModalOpen(true)}
                   className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
                 >
@@ -327,7 +329,7 @@ export default function ArticleForm({ params }) {
               callingAPI ? (
                 <div className="flex justify-center items-center h-16 w-16 rounded-full bg-blue-500 text-white font-semibold text-2xl animate-spin">
                   <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <HiOutlineRefresh />
+                    <RefreshCcw />
                   </span>
                 </div>
               ) : (

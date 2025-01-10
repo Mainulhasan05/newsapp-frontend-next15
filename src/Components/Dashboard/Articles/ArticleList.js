@@ -15,6 +15,10 @@ export default function ArticleList({ articles, onDelete }) {
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               Category
             </th>
+            {/* isFeatured */}
+            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Featured
+            </th>
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               Status
             </th>
@@ -33,7 +37,24 @@ export default function ArticleList({ articles, onDelete }) {
               <td className="px-6 py-4 whitespace-nowrap">
                 {article?.category?.name}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">{article?.status}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {article?.isFeatured ? "Yes" : "No"}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {/* set color and bold based on status */}
+                {/* status could be published, archieve, draft */}
+                <span
+                  className={`${
+                    article?.status === "published"
+                      ? "text-green-500 font-bold"
+                      : article?.status === "archived"
+                      ? "text-red-500 font-bold"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {article?.status}
+                </span>
+              </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <Link
                   href={`/dashboard/articles/edit/${article._id}`}

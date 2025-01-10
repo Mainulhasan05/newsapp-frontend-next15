@@ -1,9 +1,23 @@
 import Image from "next/image";
-import axiosInstance from "@/utils/axiosInstance";
 
 import Advertisement from "@/Components/Advertisement/Advertisement";
+import FeaturedArticle from "@/Components/Home/FeaturedArticle/FeaturedArticle";
+import LatestNews from "@/Components/Home/LatestNews/LatestNews";
 
-export default function Home() {
+const getHomePageData = async () => {
+  try {
+    console.log(`${process.env.API_URL}/api/home`);
+    const response = await fetch(`${process.env.API_URL}/api/home`);
+    return response.json().then((data) => data?.data);
+  } catch (error) {
+    console.error("Error fetching home page data:", error.message);
+    return null;
+  }
+};
+
+export default async function Home() {
+  const homePageData = await getHomePageData();
+
   const featuredNews = {
     title: "Breaking News: Major Development in Global Politics",
     image: "/placeholder.svg?height=400&width=600",
@@ -82,46 +96,10 @@ export default function Home() {
         {/* Main Content */}
         <div className="lg:w-3/4">
           {/* Featured News */}
-          <div className="mb-12">
-            <div className="relative aspect-[16/9] mb-4">
-              <Image
-                src={featuredNews.image}
-                alt={featuredNews.title}
-                fill
-                className="object-cover rounded-lg"
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-4 text-sm text-gray-600">
-                <span>{featuredNews.category}</span>
-                <span>{featuredNews.date}</span>
-              </div>
-              <h1 className="text-3xl font-bold">{featuredNews.title}</h1>
-            </div>
-          </div>
+          <FeaturedArticle featuredArticle={homePageData?.featuredArticle} />
 
           {/* Latest News Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {latestNews.map((news, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg shadow-lg overflow-hidden"
-              >
-                <div className="relative aspect-[4/3]">
-                  <Image
-                    src={news.image}
-                    alt={news.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-4">
-                  <span className="text-sm text-red-600">{news.category}</span>
-                  <h2 className="text-xl font-semibold mt-2">{news.title}</h2>
-                </div>
-              </div>
-            ))}
-          </div>
+          <LatestNews latestNews={homePageData?.latestArticles} />
 
           {/* Bottom Sections */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -174,7 +152,7 @@ export default function Home() {
 
           {/* Advertisement Sections */}
           <Advertisement
-            src="/placeholder.svg?height=250&width=300"
+            src="/images/codesharer.webp"
             alt="Advertisement 1"
             width={300}
             height={250}
