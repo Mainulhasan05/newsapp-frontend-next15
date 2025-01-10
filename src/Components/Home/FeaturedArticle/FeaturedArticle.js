@@ -2,10 +2,11 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import getTimeAgo from "@/utils/getTimeAgo";
+import Link from "next/link";
 
 const FeaturedArticle = ({ featuredArticle }) => {
   return (
-    <div className="mb-12">
+    <Link href={`/news/${featuredArticle?.slug}`} className="mb-12">
       <div className="relative aspect-[16/9] mb-4">
         <Image
           src={featuredArticle?.featuredImage}
@@ -30,7 +31,8 @@ const FeaturedArticle = ({ featuredArticle }) => {
         </div>
         <h1 className="text-3xl font-bold">{featuredArticle?.title}</h1>
       </div>
-    </div>
+      <br />
+    </Link>
   );
 };
 
