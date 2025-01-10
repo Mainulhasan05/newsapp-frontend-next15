@@ -8,7 +8,7 @@ const FeaturedArticle = ({ featuredArticle }) => {
     <div className="mb-12">
       <div className="relative aspect-[16/9] mb-4">
         <Image
-          src={featuredArticle.featuredImage}
+          src={featuredArticle?.featuredImage}
           alt={featuredArticle.title}
           fill
           className="object-cover rounded-lg"

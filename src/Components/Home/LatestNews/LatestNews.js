@@ -11,7 +11,7 @@ const LatestNews = ({ latestNews }) => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer">
             <div className="relative aspect-[4/3]">
               <Image
-                src={news.featuredImage}
+                src={news?.featuredImage}
                 alt={news.title}
                 fill
                 className="object-cover"

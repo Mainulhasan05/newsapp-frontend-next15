@@ -6,8 +6,13 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Clock, User, Tag, ChevronRight } from "lucide-react";
 import ShareComponent from "@/Components/News/ShareComponent";
+export const revalidate = 60;
 
-// Dummy data (replace with actual data fetching logic)
+// We'll prerender only the params from `generateStaticParams` at build time.
+// If a request comes in for a path that hasn't been generated,
+// Next.js will server-render the page on-demand.
+export const dynamicParams = true; // or false, to 404 on unknown paths
+
 const article = {
   title: "Breaking News: Major Development in Global Politics",
   image: "/placeholder.svg",
