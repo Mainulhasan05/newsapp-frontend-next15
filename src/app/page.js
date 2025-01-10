@@ -97,7 +97,6 @@ export default async function Home() {
         <div className="lg:w-3/4">
           {/* Featured News */}
           <FeaturedArticle featuredArticle={homePageData?.featuredArticle} />
-
           {/* Latest News Grid */}
           <LatestNews latestNews={homePageData?.latestArticles} />
 
