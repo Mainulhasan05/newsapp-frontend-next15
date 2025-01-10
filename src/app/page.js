@@ -109,7 +109,7 @@ export default async function Home() {
                   {section.title}
                 </h2>
                 <div className="space-y-4">
-                  {section.articles.map((article, index) => (
+                  {section?.articles?.map((article, index) => (
                     <div key={index} className="flex gap-4">
                       <div className="relative w-32 h-24">
                         <Image

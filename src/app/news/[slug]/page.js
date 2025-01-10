@@ -115,7 +115,7 @@ export default async function ArticleDetail({ params }) {
           <div className="bg-gray-50 p-6 rounded-lg shadow-lg mb-8">
             <h2 className="text-2xl font-bold mb-4">Related Articles</h2>
             <div className="space-y-4">
-              {relatedArticles.map((article) => (
+              {relatedArticles?.map((article) => (
                 <div key={article.id} className="flex items-center space-x-4">
                   <Image
                     src={article.featuredImage}
@@ -138,7 +138,7 @@ export default async function ArticleDetail({ params }) {
           {/* Advertisements */}
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-4">Advertisements</h2>
-            {advertisements.map((ad) => (
+            {advertisements?.map((ad) => (
               <div key={ad.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
                 <a href={ad.link} target="_blank" rel="noopener noreferrer">
                   <Image
