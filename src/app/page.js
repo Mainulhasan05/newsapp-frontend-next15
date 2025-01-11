@@ -80,7 +80,6 @@ export default async function Home() {
           <FeaturedArticle featuredArticle={homePageData?.featuredArticle} />
           {/* Latest News Grid */}
           <LatestNews latestNews={homePageData?.latestArticles} />
-
           {/* Bottom Sections */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {homePageData?.allArticles?.map((section, index) => (
