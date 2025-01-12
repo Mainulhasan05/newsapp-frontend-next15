@@ -7,6 +7,9 @@ export default function ArticleList({ articles, onDelete }) {
         <thead>
           <tr>
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Sl. No.
+            </th>
+            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               Title
             </th>
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -19,6 +22,10 @@ export default function ArticleList({ articles, onDelete }) {
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               Featured
             </th>
+            {/* createdAt */}
+            <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Created At
+            </th>
             <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               Status
             </th>
@@ -28,8 +35,9 @@ export default function ArticleList({ articles, onDelete }) {
           </tr>
         </thead>
         <tbody>
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <tr key={article._id}>
+              <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
               <td className="px-6 py-4 whitespace-nowrap">{article?.title}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {article?.author?.name}
@@ -40,6 +48,16 @@ export default function ArticleList({ articles, onDelete }) {
               <td className="px-6 py-4 whitespace-nowrap">
                 {article?.isFeatured ? "Yes" : "No"}
               </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className="text-blue-500">
+                  {new Date(article?.createdAt).toLocaleTimeString()}
+                </span>
+                <span className="text-gray-500"> | </span>
+                <span className="text-purple-500">
+                  {new Date(article?.createdAt).toDateString()}
+                </span>
+              </td>
+
               <td className="px-6 py-4 whitespace-nowrap">
                 {/* set color and bold based on status */}
                 {/* status could be published, archieve, draft */}

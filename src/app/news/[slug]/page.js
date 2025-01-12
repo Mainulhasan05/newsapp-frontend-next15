@@ -7,6 +7,7 @@ export const revalidate = 60;
 import axiosInstance from "@/utils/axiosInstance";
 import parse from "html-react-parser";
 import NewsTip from "@/Components/News/NewsTip";
+import Head from "next/head";
 
 // We'll prerender only the params from `generateStaticParams` at build time.
 // If a request comes in for a path that hasn't been generated,
@@ -27,6 +28,34 @@ const getArticle = async (slug) => {
     return null;
   }
 };
+export const generateMetadata = async ({ params }) => {
+  const { slug } = await params;
+  const { data } = await getArticle(slug);
+  const article = data?.article;
+
+  return {
+    title: article?.title || "News Article",
+    description: article?.summary || article?.content?.substring(0, 160),
+    openGraph: {
+      title: article?.title || "News Article",
+      description: article?.summary || article?.content?.substring(0, 160),
+      url: `https://songbadzog.com/news/${slug}`,
+      images: [
+        {
+          url: article?.featuredImage || "/images/default.jpg",
+          alt: article?.title || "News Article",
+        },
+      ],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article?.title || "News Article",
+      description: article?.summary || article?.content?.substring(0, 160),
+      image: article?.featuredImage || "/images/default.jpg",
+    },
+  };
+};
 
 export default async function ArticleDetail({ params }) {
   const resolvedParams = await params;
@@ -41,11 +70,43 @@ export default async function ArticleDetail({ params }) {
       hour: "2-digit",
       minute: "2-digit",
     };
-    return new Date(dateString).toLocaleDateString("en-US", options);
+    return new Date(dateString).toLocaleDateString("bn-BD", options);
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Head>
+        <title>{article?.title || "News Article"}</title>
+        <meta
+          name="description"
+          content={article?.summary || article?.content?.substring(0, 160)}
+        />
+        <meta property="og:title" content={article?.title || "News Article"} />
+        <meta
+          property="og:description"
+          content={article?.summary || article?.content?.substring(0, 160)}
+        />
+        <meta
+          property="og:url"
+          content={`https://songbadzog.com/news/${resolvedParams.slug}`}
+        />
+        <meta
+          property="og:image"
+          content={article?.featuredImage || "/images/default.jpg"}
+        />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={article?.title || "News Article"} />
+        <meta
+          name="twitter:description"
+          content={article?.summary || article?.content?.substring(0, 160)}
+        />
+        <meta
+          name="twitter:image"
+          content={article?.featuredImage || "/images/default.jpg"}
+        />
+      </Head>
+
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-gray-600 text-sm" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -79,7 +140,13 @@ export default async function ArticleDetail({ params }) {
           </div>
           <div className="mb-6">
             <Image
-              src={article?.featuredImage}
+              src={
+                article?.featuredImage
+                  ? article?.featuredImage == ""
+                    ? "/images/default.jpg"
+                    : article?.featuredImage
+                  : "/images/default.jpg"
+              }
               alt={article?.title}
               width={450}
               height={300}

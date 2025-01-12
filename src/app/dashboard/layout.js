@@ -1,24 +1,38 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Sidebar from "@/Components/Dashboard/SideBar";
+import { Menu } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
+      {/* Top bar */}
+      <div className="bg-white shadow-md p-4 flex justify-between items-center">
+        <button
+          onClick={toggleSidebar}
+          className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+        >
+          <Menu size={24} />
+        </button>
+        <Link href="/" className="text-blue-600 hover:text-blue-800">
+          Go to Website
+        </Link>
+      </div>
+
+      {/* Sidebar */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main
-        className={`flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 ${
-          isSidebarOpen ? "ml-64" : "ml-20"
-        } transition-all duration-300 ease-in-out`}
-      >
-        <div className="container mx-auto px-6 py-8">{children}</div>
+
+      {/* Main content */}
+      <main className="w-full">
+        <div className="container mx-auto px-4 py-8">{children}</div>
       </main>
     </div>
   );
