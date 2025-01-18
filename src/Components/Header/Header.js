@@ -15,7 +15,7 @@ function toBengaliNumerals(number) {
   return number.toString().replace(/\d/g, (d) => bengaliNumerals[d]);
 }
 
-export default function Header() {
+export default function Header({ categories }) {
   const { user } = useSelector((state) => state.auth);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -51,15 +51,15 @@ export default function Header() {
     return () => clearInterval(timer);
   }, []);
 
-  const categories = [
-    { name: "Home", href: "/" },
-    { name: "Latest News", href: "/latest" },
-    { name: "Politics", href: "/politics" },
-    { name: "Business", href: "/business" },
-    { name: "Sports", href: "/sports" },
-    { name: "Entertainment", href: "/entertainment" },
-    { name: "Technology", href: "/technology" },
-  ];
+  // const categories = [
+  //   { name: "Home", href: "/" },
+  //   { name: "Latest News", href: "/latest" },
+  //   { name: "Politics", href: "/politics" },
+  //   { name: "Business", href: "/business" },
+  //   { name: "Sports", href: "/sports" },
+  //   { name: "Entertainment", href: "/entertainment" },
+  //   { name: "Technology", href: "/technology" },
+  // ];
 
   const handleLogout = () => {
     Cookies.remove("access_token");
@@ -97,10 +97,10 @@ export default function Header() {
           >
             <nav className="space-y-4 md:space-y-0">
               <ul className="flex flex-col md:flex-row md:items-center md:justify-center md:space-x-6">
-                {categories.map((category) => (
+                {categories?.map((category) => (
                   <li key={category.name}>
                     <Link
-                      href={`/category${category.href}`}
+                      href={`/category/${category.slug}`}
                       className="block py-2 text-gray-700 hover:text-red-600"
                     >
                       {category.name}

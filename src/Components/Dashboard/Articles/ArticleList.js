@@ -38,7 +38,9 @@ export default function ArticleList({ articles, onDelete }) {
           {articles.map((article, index) => (
             <tr key={article._id}>
               <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{article?.title}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {article?.title?.slice(0, 20)}
+              </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {article?.author?.name}
               </td>

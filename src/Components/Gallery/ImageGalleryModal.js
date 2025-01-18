@@ -10,6 +10,7 @@ export default function ImageGalleryModal({ isOpen, onClose, images }) {
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => {
       toast.success("Image URL copied to clipboard!");
+      onClose();
     });
   };
 

@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
+import "dayjs/locale/bn"; // Ensure the locale is properly imported
 dayjs.locale("bn");
-dayjs().format();
 
 const getTimeAgo = (date) => {
-  const currentDate = dayjs(new Date());
+  const currentDate = dayjs();
   const diffInSeconds = currentDate.diff(date, "second");
 
   if (diffInSeconds < 60) {
@@ -25,16 +25,15 @@ const getTimeAgo = (date) => {
     return `${diffInDays} days ago`;
   }
 
-  return currentDate.diff(date, "days") > 7
-    ? date.format("YYYY-MM-DD")
-    : `${diffInDays} days ago`;
+  // Use dayjs for formatting the date
+  return dayjs(date).format("YYYY-MM-DD");
 };
 
 export default getTimeAgo;
 
 // Usage example:
-// console.log(getTimeAgo(dayjs().subtract(5, 'seconds'))); // "5 seconds ago"
-// console.log(getTimeAgo(dayjs().subtract(10, 'minutes'))); // "10 minutes ago"
-// console.log(getTimeAgo(dayjs().subtract(3, 'hours'))); // "3 hours ago"
-// console.log(getTimeAgo(dayjs().subtract(2, 'days'))); // "2 days ago"
-// console.log(getTimeAgo(dayjs().subtract(10, 'days'))); // formatted date
+// console.log(getTimeAgo(dayjs().subtract(5, "seconds"))); // "5 seconds ago"
+// console.log(getTimeAgo(dayjs().subtract(10, "minutes"))); // "10 minutes ago"
+// console.log(getTimeAgo(dayjs().subtract(3, "hours"))); // "3 hours ago"
+// console.log(getTimeAgo(dayjs().subtract(2, "days"))); // "2 days ago"
+// console.log(getTimeAgo(dayjs().subtract(10, "days"))); // formatted date

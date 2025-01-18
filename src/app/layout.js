@@ -47,13 +47,18 @@ export const metadata = {
   },
 };
 
+// /api/home/categories
+const categories = await fetch(`${process.env.API_URL}/api/home/categories`)
+  .then((res) => res.json())
+  .catch((err) => console.log(err.message));
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <Providers>
           <Toaster position="top-right" />
-          <Header />
+          <Header categories={categories?.data?.categories} />
           {children}
           <Footer />
         </Providers>

@@ -73,7 +73,8 @@ const gallerySlice = createSlice({
         );
       })
       .addCase(uploadImage.fulfilled, (state, action) => {
-        state.images.push(action.payload);
+        // state.images.push(action.payload);
+        state.images.unshift(action.payload);
       });
   },
 });

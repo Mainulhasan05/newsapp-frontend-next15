@@ -8,6 +8,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import parse from "html-react-parser";
 import NewsTip from "@/Components/News/NewsTip";
 import Head from "next/head";
+import ImageComponent from "@/Components/ImageComponent";
 
 // We'll prerender only the params from `generateStaticParams` at build time.
 // If a request comes in for a path that hasn't been generated,
@@ -139,7 +140,7 @@ export default async function ArticleDetail({ params }) {
             <span>{formatDate(article?.createdAt)}</span>
           </div>
           <div className="mb-6">
-            <Image
+            <ImageComponent
               src={
                 article?.featuredImage
                   ? article?.featuredImage == ""
@@ -186,7 +187,7 @@ export default async function ArticleDetail({ params }) {
             <div className="space-y-4">
               {relatedArticles?.map((article, index) => (
                 <div key={index} className="flex items-center space-x-4">
-                  <Image
+                  <ImageComponent
                     src={article?.featuredImage}
                     alt={article?.title}
                     width={80}
